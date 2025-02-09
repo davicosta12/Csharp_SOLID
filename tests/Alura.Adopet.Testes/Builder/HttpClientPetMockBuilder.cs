@@ -6,20 +6,20 @@ namespace Alura.Adopet.Testes.Builder;
 
 internal static class HttpClientPetMockBuilder
 {
-    public static Mock<HttpClientPet> GetMock()
+    public static Mock<PetService> GetMock()
     {
-        var httpClientPet = new Mock<HttpClientPet>(MockBehavior.Default,
+        var petService = new Mock<PetService>(MockBehavior.Default,
             It.IsAny<HttpClient>());
-        return httpClientPet;
+        return petService;
     }
 
-    public static Mock<HttpClientPet> GetMockList(List<Pet> lista)
+    public static Mock<PetService> GetMockList(List<Pet> lista)
     {
-        var httpClientPet = new Mock<HttpClientPet>(MockBehavior.Default,
+        var petService = new Mock<PetService>(MockBehavior.Default,
             It.IsAny<HttpClient>());
-        httpClientPet.Setup(_ => _.ListAsync())
+        petService.Setup(_ => _.ListAsync())
             .ReturnsAsync(lista);
-        return httpClientPet;
+        return petService;
     }
 
 }

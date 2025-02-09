@@ -15,10 +15,10 @@ public class ListTest
                           "Lima", TipoPet.Cachorro);
         listaDePet.Add(pet);
 
-        var httpClientPet = HttpClientPetMockBuilder.GetMockList(listaDePet);
+        var petService = HttpClientPetMockBuilder.GetMockList(listaDePet);
 
         //Act
-        var retorno = await new Console.Comandos.List(httpClientPet.Object)
+        var retorno = await new Console.Comandos.List(petService.Object)
             .ExecutarAsync();
 
         //Assert

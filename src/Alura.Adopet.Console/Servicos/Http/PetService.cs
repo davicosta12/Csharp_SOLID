@@ -1,13 +1,14 @@
 ﻿using System.Net.Http.Json;
 using Alura.Adopet.Console.Modelos;
+using Alura.Adopet.Console.Servicos.Abstracoes;
 
 namespace Alura.Adopet.Console.Servicos.Http;
 
-public class HttpClientPet
+public class PetService : IApiServices<Pet>
 {
     private HttpClient client;
 
-    public HttpClientPet(HttpClient client)
+    public PetService(HttpClient client)
     {
         this.client = client;
     }

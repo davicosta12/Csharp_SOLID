@@ -17,14 +17,14 @@ public class ImportIntegrationTest
               "Lima", TipoPet.Cachorro); //"456b24f4-19e2-4423-845d-4a80e8854a41;Lima Limão;1";
         listaDePet.Add(pet);
         var leitorDeArquivo = LeitorDeArquivosMockBuilder.GetMock(listaDePet);       
-          var httpClientPet = new HttpClientPet(new AdopetAPIClientFactory().CreateClient("adopet"));
-        var import = new Import(httpClientPet,leitorDeArquivo.Object);
+          var petService = new PetService(new AdopetAPIClientFactory().CreateClient("adopet"));
+        var import = new Import(petService,leitorDeArquivo.Object);
          
         //Act
         await import.ExecutarAsync();
         
         //Assert
-        var listaPet = await httpClientPet.ListAsync();
+        var listaPet = await petService.ListAsync();
         Assert.NotNull(listaPet);
     }
 }

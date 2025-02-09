@@ -1,21 +1,20 @@
-﻿using Alura.Adopet.Console.Modelos;
-using Alura.Adopet.Console.Servicos.Arquivos;
-using Alura.Adopet.Console.Servicos.Http;
-using Alura.Adopet.Console.Atributos;
+﻿using Alura.Adopet.Console.Atributos;
 using FluentResults;
 using Alura.Adopet.Console.Results;
+using Alura.Adopet.Console.Servicos.Abstracoes;
+using Alura.Adopet.Console.Modelos;
 
 namespace Alura.Adopet.Console.Comandos
 {
     [DocComandoAttribute(instrucao: "import",
         documentacao: "adopet import <ARQUIVO> comando que realiza a importação do arquivo de pets.")]
-    public class Import:IComando
+    public class Import : IComando
     {
-        private readonly HttpClientPet clientPet;
+        private readonly IApiServices<Pet> clientPet;
 
-        private readonly LeitorDeArquivo leitor;
+        private readonly ILeitorDeArquivos<Pet> leitor;
 
-        public Import(HttpClientPet clientPet, LeitorDeArquivo leitor)
+        public Import(IApiServices<Pet> clientPet, ILeitorDeArquivos<Pet> leitor)
         {
             this.clientPet = clientPet;
             this.leitor = leitor;
@@ -32,20 +31,16 @@ namespace Alura.Adopet.Console.Comandos
             {
                 var listaDePet = leitor.RealizaLeitura();
                 foreach (var pet in listaDePet)
-                {                       
-                   await clientPet.CreateAsync(pet);               
+                {
+                    await clientPet.CreateAsync(pet);
                 }
-                return Result.Ok().WithSuccess(new SuccessWithPets(listaDePet,"Importação Realizada com Sucesso!"));
+                return Result.Ok().WithSuccess(new SuccessWithPets(listaDePet, "Importação Realizada com Sucesso!"));
             }
             catch (Exception exception)
             {
 
                 return Result.Fail(new Error("Importação falhou!").CausedBy(exception));
             }
-            
-            
-            
-            
         }
     }
 }

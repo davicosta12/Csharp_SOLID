@@ -20,13 +20,13 @@ public class HttpClientPetTest
                      [
                         {
                             ""id"": ""ed48920c-5adb-4684-9b8f-ba8a94775a11"",
-                            ""nome"": ""Sábio"",
+                            ""nome"": ""Sï¿½bio"",
                             ""tipo"": 0,
                             ""proprietario"":null
                         },
                         {
                             ""id"": ""456b24f4-19e2-4423-845d-4a80e8854a41"",
-                            ""nome"": ""Lima Limão"",
+                            ""nome"": ""Lima Limï¿½o"",
                             ""tipo"": 0,
                             ""proprietario"": null
                         },
@@ -67,7 +67,7 @@ public class HttpClientPetTest
 
         var httpClient = new Mock<HttpClient>(MockBehavior.Default, handlerMock.Object);
         httpClient.Object.BaseAddress = new Uri("http://localhost:5057");
-        var clientePet = new HttpClientPet(httpClient.Object);
+        var clientePet = new PetService(httpClient.Object);
 
         //Act
         var lista = await clientePet.ListAsync();
@@ -93,7 +93,7 @@ public class HttpClientPetTest
         var httpClient = new Mock<HttpClient>(MockBehavior.Default, handlerMock.Object);
         httpClient.Object.BaseAddress = new Uri("http://localhost:5057");
 
-        var clientePet = new HttpClientPet(httpClient.Object);
+        var clientePet = new PetService(httpClient.Object);
 
         //Act+Assert
         await Assert.ThrowsAnyAsync<Exception>(() => clientePet.ListAsync());

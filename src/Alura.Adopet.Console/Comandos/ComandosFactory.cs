@@ -1,5 +1,6 @@
 ﻿using Alura.Adopet.Console.Servicos.Http;
 using Alura.Adopet.Console.Servicos.Arquivos;
+using Alura.Adopet.Console.Modelos;
 
 namespace Alura.Adopet.Console.Comandos;
 
@@ -15,23 +16,25 @@ public static class ComandosFactory
         switch (comando)
         {
             case "import":
-                var httpClientPet = new HttpClientPet(new AdopetAPIClientFactory().CreateClient("adopet"));
-                var leitorDeArquivos = new LeitorDeArquivo(argumentos[1]);
-                return new Import(httpClientPet, leitorDeArquivos);
+                var petService = new PetService(new AdopetAPIClientFactory().CreateClient("adopet"));
+                var leitorDeArquivos = LeitorDeArquivosFactory.CreatePetFrom(argumentos[1]);
+                if (leitorDeArquivos is null) return null;
+                return new Import(petService, leitorDeArquivos);
 
             case "list":
-                var httpClientPetList = new HttpClientPet(new AdopetAPIClientFactory().CreateClient("adopet"));
+                var httpClientPetList = new PetService(new AdopetAPIClientFactory().CreateClient("adopet"));
                 return new List(httpClientPetList);
 
             case "show":
-                var leitorDeArquivosShow = new LeitorDeArquivo(argumentos[1]);
+                var leitorDeArquivosShow = LeitorDeArquivosFactory.CreatePetFrom(argumentos[1]);
+                if (leitorDeArquivosShow is null) return null;
                 return new Show(leitorDeArquivosShow);
 
             case "help":
-                var comandoASerExibido = argumentos.Length==2? argumentos[1] : null;
+                var comandoASerExibido = argumentos.Length == 2 ? argumentos[1] : null;
                 return new Help(comandoASerExibido);
 
             default: return null;
-        }           
+        }
     }
 }

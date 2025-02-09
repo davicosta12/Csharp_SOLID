@@ -15,15 +15,15 @@ public class ImportTest
         List<Pet> listaDePet = new();
         var leitorDeArquivo = LeitorDeArquivosMockBuilder.GetMock(listaDePet);
 
-        var httpClientPet = HttpClientPetMockBuilder.GetMock();
+        var petService = HttpClientPetMockBuilder.GetMock();
 
-        var import = new Import(httpClientPet.Object, leitorDeArquivo.Object);
+        var import = new Import(petService.Object, leitorDeArquivo.Object);
 
         //Act
         await import.ExecutarAsync();
 
         //Assert
-        httpClientPet.Verify(_ => _.CreateAsync(It.IsAny<Pet>()), Times.Never);
+        petService.Verify(_ => _.CreateAsync(It.IsAny<Pet>()), Times.Never);
     }
 
     [Fact]
@@ -34,9 +34,9 @@ public class ImportTest
         var leitor = LeitorDeArquivosMockBuilder.GetMock(listaDePet);
         leitor.Setup(_ => _.RealizaLeitura()).Throws<FileNotFoundException>();
 
-        var httpClientPet = HttpClientPetMockBuilder.GetMock();
+        var petService = HttpClientPetMockBuilder.GetMock();
 
-        var import = new Import(httpClientPet.Object, leitor.Object);
+        var import = new Import(petService.Object, leitor.Object);
 
         //Act
         var resultado = await import.ExecutarAsync();
@@ -55,9 +55,9 @@ public class ImportTest
         listaDePet.Add(pet);
         var leitorDeArquivo = LeitorDeArquivosMockBuilder.GetMock(listaDePet);
 
-        var httpClientPet = HttpClientPetMockBuilder.GetMock();
+        var petService = HttpClientPetMockBuilder.GetMock();
 
-        var import = new Import(httpClientPet.Object, leitorDeArquivo.Object);
+        var import = new Import(petService.Object, leitorDeArquivo.Object);
 
         //Act
         var resultado = await import.ExecutarAsync();
