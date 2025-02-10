@@ -18,8 +18,15 @@ namespace Alura.Adopet.Console.Servicos.Arquivos
             {
                 return null;
             }
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
             using var stream = new FileStream(caminhoArquivo, FileMode.Open, FileAccess.Read);
-            return JsonSerializer.Deserialize<IEnumerable<T>>(stream) ?? Enumerable.Empty<T>();
+            var jsonDeserialize = JsonSerializer.Deserialize<IEnumerable<T>>(stream, options) ?? Enumerable.Empty<T>();
+            return jsonDeserialize;
         }
     }
 }

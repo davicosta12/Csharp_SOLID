@@ -1,4 +1,6 @@
-﻿using Alura.Adopet.Console.Results;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Alura.Adopet.Console.Results;
 using FluentResults;
 
 namespace Alura.Adopet.Console.UI
@@ -18,12 +20,11 @@ namespace Alura.Adopet.Console.UI
                 {
                     ExibeSucesso(result);
                 }
-            }   
+            }
             finally
             {
                 System.Console.ForegroundColor = ConsoleColor.White;
             }
-
         }
 
         private static void ExibeSucesso(Result result)
@@ -37,7 +38,19 @@ namespace Alura.Adopet.Console.UI
                 case SuccessWithDocs d:
                     ExibeDocumentacao(d);
                     break;
+                case SuccessWithClientes c:
+                    ExibeClientes(c);
+                    break;
             }
+        }
+
+        private static void ExibeClientes(SuccessWithClientes clientes)
+        {
+            foreach (var cliente in clientes.Data)
+            {
+                System.Console.WriteLine(cliente);
+            }
+            System.Console.WriteLine(clientes.Message);
         }
 
         private static void ExibeDocumentacao(SuccessWithDocs documentacaoComando)

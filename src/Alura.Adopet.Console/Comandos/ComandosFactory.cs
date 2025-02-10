@@ -1,6 +1,5 @@
 ﻿using Alura.Adopet.Console.Servicos.Http;
 using Alura.Adopet.Console.Servicos.Arquivos;
-using Alura.Adopet.Console.Modelos;
 
 namespace Alura.Adopet.Console.Comandos;
 
@@ -20,6 +19,12 @@ public static class ComandosFactory
                 var leitorDeArquivos = LeitorDeArquivosFactory.CreatePetFrom(argumentos[1]);
                 if (leitorDeArquivos is null) return null;
                 return new Import(petService, leitorDeArquivos);
+
+            case "import-clientes":
+                var clienteService = new ClienteService(new AdopetAPIClientFactory().CreateClient("adopet"));
+                var leitorDeArquivosCliente = LeitorDeArquivosFactory.CreateClienteFrom(argumentos[1]);
+                if (leitorDeArquivosCliente is null) return null;
+                return new ImportClientes(clienteService, leitorDeArquivosCliente);
 
             case "list":
                 var httpClientPetList = new PetService(new AdopetAPIClientFactory().CreateClient("adopet"));

@@ -16,6 +16,17 @@ public class FabricaDeComandosTest
     }
 
     [Fact]
+    public void DadoUmParametroDeveRetornarUmTipoList()
+    {
+        //Arrange
+        string[] args = { "list", "lista.csv" };
+        //Act
+        var comando = ComandosFactory.CriarComando(args);
+        //Assert
+        Assert.IsType<List>(comando);
+    }
+
+    [Fact]
     public void DadoUmParametroInvalidoDeveRetornarNulo()
     {
         //Arrange
@@ -47,6 +58,20 @@ public class FabricaDeComandosTest
         Assert.Null(comando);
     }
 
-
-
+    [Theory]
+    [InlineData("import", "Import")]
+    [InlineData("import-clientes", "ImportClientes")]
+    [InlineData("show", "Show")]
+    [InlineData("list", "List")]
+    [InlineData("help", "Help")]
+    public void DadoParametroValidoDeveRetornarObjetoNaoNulo(string instrucao, string nomeTipo)
+    {
+        // arrange
+        string[] args = new[] { instrucao, "lista.csv" };
+        // act
+        var comando = ComandosFactory.CriarComando(args);
+        // assert
+        Assert.NotNull(comando);
+        Assert.Equal(nomeTipo, comando.GetType().Name);
+    }
 }
