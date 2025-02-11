@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Alura.Adopet.Console.Results;
+﻿using Alura.Adopet.Console.Results;
 using FluentResults;
 
 namespace Alura.Adopet.Console.UI

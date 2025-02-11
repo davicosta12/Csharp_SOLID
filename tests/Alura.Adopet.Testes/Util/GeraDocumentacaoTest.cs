@@ -19,7 +19,7 @@ public class GeraDocumentacaoTest
         //Assert            
         Assert.NotNull(dicionario);
         Assert.NotEmpty(dicionario);
-        Assert.Equal(5, dicionario.Count);
+        Assert.Equal(6, dicionario.Count);
 
     }
 }
