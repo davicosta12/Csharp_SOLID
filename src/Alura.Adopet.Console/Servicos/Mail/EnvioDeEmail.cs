@@ -1,13 +1,15 @@
 using System.Net;
 using System.Net.Mail;
+using Alura.Adopet.Console.Results;
 using Alura.Adopet.Console.Servicos.Abstracoes;
 using Alura.Adopet.Console.Settings;
+using FluentResults;
 
 namespace Alura.Adopet.Console.Servicos.Mail
 {
-    public class EnvioDeEmail
+    public static class EnvioDeEmail
     {
-        private IMailServices CriarMailService()
+        private static IMailServices CriarMailService()
         {
             MailSettings settings = Configurations.MailSetting;
             SmtpClient smtp = new()
@@ -19,6 +21,22 @@ namespace Alura.Adopet.Console.Servicos.Mail
                 UseDefaultCredentials = false
             };
             return new SmtpClientMailServices(smtp);
+        }
+
+        public static void Disparar(Result resultado)
+        {
+            ISuccess? success = resultado.Successes.FirstOrDefault();
+            if (success is null) return;
+            if (success is SuccessWithPets sucesso)
+            {
+                var emailService = CriarMailService();
+                emailService.SendMailAsync(
+                    remetente: "no-reply@adopet.com.br",
+                    titulo: $"[Adopet] {sucesso.Message}",
+                    corpo: $"Foram importados {sucesso.Data.Count()} pets.",
+                    destinatario: "deadspace24@hotmail.com"
+                );
+            }
         }
     }
 }
