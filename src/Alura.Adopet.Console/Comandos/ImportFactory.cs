@@ -1,6 +1,7 @@
 using Alura.Adopet.Console.Servicos.Arquivos;
 using Alura.Adopet.Console.Servicos.Http;
 using Alura.Adopet.Console.Servicos.Mail;
+using Alura.Adopet.Console.Servicos.Progresso;
 using Alura.Adopet.Console.Settings;
 
 namespace Alura.Adopet.Console.Comandos;
@@ -20,6 +21,7 @@ public class ImportFactory : IComandoFactory
 
         var import = new Import(petService, leitorDeArquivos);
         import.DepoisDaExecucao += EnvioDeEmail.Disparar;
+        import.ProgressChanged += ProcessaProgresso.ProgressChanged;
         return import;
     }
 }

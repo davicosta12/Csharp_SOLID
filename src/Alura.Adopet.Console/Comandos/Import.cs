@@ -8,7 +8,7 @@ namespace Alura.Adopet.Console.Comandos
 {
     [DocComandoAttribute(instrucao: "import",
         documentacao: "adopet import <ARQUIVO> comando que realiza a importação do arquivo de pets.")]
-    public class Import : IComando, IDepoisDaExecucao
+    public class Import : IComando, IDepoisDaExecucao, ITrabalhoEmProgresso
     {
         private readonly IApiServices<Pet> clientPet;
 
@@ -21,6 +21,7 @@ namespace Alura.Adopet.Console.Comandos
         }
 
         public event Action<Result>? DepoisDaExecucao;
+        public event Action<int, int> ProgressChanged;
 
         public async Task<Result> ExecutarAsync()
         {
@@ -32,9 +33,12 @@ namespace Alura.Adopet.Console.Comandos
             try
             {
                 var listaDePet = leitor.RealizaLeitura();
+                int i = 0;
                 foreach (var pet in listaDePet)
                 {
+                    i++;
                     await clientPet.CreateAsync(pet);
+                    OnProgressChanged(i, listaDePet.Count());
                 }
                 var resultado = Result.Ok().WithSuccess(new SuccessWithPets(listaDePet, "Importação Realizada com Sucesso!"));
                 DepoisDaExecucao?.Invoke(resultado);
@@ -45,6 +49,12 @@ namespace Alura.Adopet.Console.Comandos
 
                 return Result.Fail(new Error("Importação falhou!").CausedBy(exception));
             }
+        }
+
+        private void OnProgressChanged(int i, int total)
+        {
+            ProgressChanged?.Invoke(i, total);
+            Thread.Sleep(100);
         }
     }
 }
